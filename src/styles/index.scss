@@ -1,0 +1,65 @@
+@import './grid.scss';
+@import './reset.scss';
+
+.flex {
+  display: flex;
+}
+
+.flex1 {
+  flex: 1;
+}
+
+.flex-align-center {
+  @extend .flex;
+  align-items: center;
+}
+
+.flex-column {
+  @extend .flex;
+  flex-direction: column;
+}
+
+.flex-wrapper {
+  @extend .flex;
+  flex-wrap: wrap;
+}
+
+.flex-center {
+  @extend .flex-align-center;
+  justify-content: center;
+}
+
+.flex-sb-c {
+  @extend .flex-align-center;
+  justify-content: space-between;
+}
+
+.flex-sa-c {
+  @extend .flex-align-center;
+  justify-content: space-around;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.block {
+  display: block;
+}
+
+html, body {
+  margin: 0;
+  height: 100%;
+  box-sizing: border-box;
+   -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  -webkit-text-size-adjust: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+#app {
+  height: 100%;
+}
+

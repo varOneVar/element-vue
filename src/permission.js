@@ -1,7 +1,5 @@
 /* eslint-disable space-before-function-paren */
-import NProgress from 'nprogress'
-import 'nprogress/nprogress.css'
-import '@/styles/nprogress.css'
+
 import store from './store'
 import { hasPermission } from '@/utils/login-manage'
 // import { goLoginPortal } from '@/utils/client-info'
@@ -9,7 +7,6 @@ import { Message } from 'element-ui'
 
 // 路由拦截
 async function routerEnterFunc(to, from, next) {
-  NProgress.start()
   // 是否有用户id判断有没有登录，有就前往页面
   if (!store.getters.userId) {
     // 没有userid看有没有token，有就获取信息
@@ -22,7 +19,7 @@ async function routerEnterFunc(to, from, next) {
         next()
         // goLoginPortal()
       } else {
-        const token = to.query.token ? to.query.token : GetQueryString('code')
+        const token = to.query.token
         store.commit('user/CHANGE_TOKEN', token)
         try {
           // 登录
@@ -38,7 +35,6 @@ async function routerEnterFunc(to, from, next) {
         } catch (error) {
           console.log(error)
         }
-        NProgress.done()
       }
     } else {
       try {
@@ -64,7 +60,6 @@ async function routerEnterFunc(to, from, next) {
     } else {
       if (R[0].path === '*') {
         messageTIP('抱歉！您暂无权限进入此应用！', next)
-        NProgress.done()
         return
       }
       const homePath = R[0].redirect || R[0].path
@@ -74,8 +69,6 @@ async function routerEnterFunc(to, from, next) {
         next(homePath)
       }
     }
-
-    NProgress.done()
   }
 }
 async function messageTIP(str, next) {
@@ -88,7 +81,6 @@ const mainTitle = store.state.settings.title
 const routerAfterFunc = (to) => {
   store.commit('app/SET_CONTENT_LOADING', false)
   store.commit('app/SET_WHOLE_PAGE_LOADING', false)
-  NProgress.done()
   const title = to.meta.title ? `${to.meta.title} - ${mainTitle}` : mainTitle
   changeTitle(title)
 }

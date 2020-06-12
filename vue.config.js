@@ -26,16 +26,16 @@ module.exports = {
     // sass-loader 时，使用 `{ sass: { ... } }`。
     loaderOptions: {
       sass: {
-        data: [
+        prependData: [
           `@import "~@/styles/mixins.scss";`,
           `@import "~@/styles/custom-variables.scss";`
         ].join('\n')
-      },
+      }
     },
 
     // 为所有的 CSS 及其预处理文件开启 CSS Modules。
     // 这个选项不会影响 `*.vue` 文件。
-    modules: false
+    requireModuleExtension: true
   },
 
   // arallel: require('os').cpus().length > 1,
@@ -47,12 +47,12 @@ module.exports = {
     // port: port,
     port: PROT,
     https: false,
-    hotOnly: true,
+    hotOnly: true
     // 查阅 https://github.com/vuejs/vue-doc-zh-cn/vue-cli/cli-service.md#配置代理
     // proxy: ''
   },
 
-  configureWebpack: (config) => {
+  configureWebpack: config => {
     if (process.env.NODE_ENV === 'production') {
       // 为生产环境修改配置...
       config.externals = {
@@ -63,18 +63,21 @@ module.exports = {
       }
     }
   },
-  chainWebpack: (config) => {
-    config.plugin('html').tap((args) => {
+  chainWebpack: config => {
+    config.plugin('html').tap(args => {
       args[0].template = process.env.template
       return args
     })
 
     // set svg-sprite-loader
-    config.module.rule('svg').exclude.add(resolve('src/icons')).end()
+    config.module
+      .rule('svg')
+      .exclude.add(resolve('src/assets/icons'))
+      .end()
     config.module
       .rule('icons')
       .test(/\.svg$/)
-      .include.add(resolve('src/icons'))
+      .include.add(resolve('src/assets/icons'))
       .end()
       .use('svg-sprite-loader')
       .loader('svg-sprite-loader')
@@ -88,7 +91,7 @@ module.exports = {
       .rule('vue')
       .use('vue-loader')
       .loader('vue-loader')
-      .tap((options) => {
+      .tap(options => {
         options.compilerOptions.preserveWhitespace = true
         return options
       })
@@ -96,9 +99,11 @@ module.exports = {
 
     config
       // https://webpack.js.org/configuration/devtool/#development
-      .when(process.env.NODE_ENV === 'development', (config) => config.devtool('cheap-source-map'))
+      .when(process.env.NODE_ENV === 'development', config =>
+        config.devtool('cheap-source-map')
+      )
 
-    config.when(process.env.NODE_ENV !== 'development', (config) => {
+    config.when(process.env.NODE_ENV !== 'development', config => {
       config
         .plugin('ScriptExtHtmlWebpackPlugin')
         .after('html')

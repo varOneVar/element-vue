@@ -1,4 +1,3 @@
-import { isArray } from 'core-js/fn/array'
 
 /**
  * @param {string} url
@@ -29,7 +28,7 @@ export function param2Obj(url) {
 export function debounce(func, wait, immediate) {
   let timeout, args, context, timestamp, result
 
-  const later = function () {
+  const later = function() {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp
 
@@ -46,7 +45,7 @@ export function debounce(func, wait, immediate) {
     }
   }
 
-  return function (...args) {
+  return function(...args) {
     context = this
     timestamp = +new Date()
     const callNow = immediate && !timeout
@@ -111,7 +110,6 @@ export function simulateInterval(callback, interval, async = false) {
 }
 // 数组分块
 export function arrChunk(array, size = 1) {
-  if (!isArray(array)) return []
   const len = array.length
   Array.from({ length: Math.ceil(len / size) }, (v, i) => array.slice(i * size, (i + 1) * size))
 }

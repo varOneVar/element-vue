@@ -2,14 +2,14 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 import { getMessage } from './error'
 import settings from '@/settings'
-import store from '@/store'
+// import store from '@/store'
 import CancelRepeatRequest from './requestCancel'
 
 export function CreateAxiosInstance() {
   return axios.create({
     baseURL: process.env.VUE_APP_BASE_API,
     timeout: 60000,
-    withCredentials: false,
+    withCredentials: false
   })
 }
 const service = CreateAxiosInstance()
@@ -28,8 +28,8 @@ const cancelRequest = new CancelRepeatRequest()
 service.interceptors.request.use(
   (config) => {
     const params = getParams(config)
-    if (store.getters.token) {
-    }
+    // if (store.getters.token) {
+    // }
 
     // 取消重复请求
     if (params.noCancel) {
@@ -63,7 +63,7 @@ service.interceptors.response.use(
     }
     if (flag !== settings.flag) {
       // 只是弹个提示，数据还是返回出去了，页面还是要判断code是否等于0
-      Message.error(getMessage(code, (data.message || data.result)))
+      Message.error(getMessage(flag, (data.message || data.result)))
     }
     return data
   },
