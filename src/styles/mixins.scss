@@ -1,0 +1,13 @@
+/**
+*  样式穿透
+ use： @include v-deep {
+        .app-main {
+          padding-top: $navBarHeight;
+        }
+      }
+*/
+@mixin v-deep() {
+  ::v-deep {
+    @content
+  }
+}
